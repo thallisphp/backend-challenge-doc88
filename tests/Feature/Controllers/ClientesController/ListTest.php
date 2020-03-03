@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\ClientesController;
 
+use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
 
 /**
@@ -12,6 +13,10 @@ use Tests\TestCase;
  * @package Tests\Feature\Controllers\ClientesController
  */
 class ListTest extends TestCase {
+    use RequiresAuthentication;
+
+    private const Method = 'getJson';
+
     /**
      * Retorna a url que será testada
      *

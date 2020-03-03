@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\ClientesController;
 
+use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
 
 /**
@@ -12,6 +13,10 @@ use Tests\TestCase;
  * @package Tests\Feature\Controllers\ClientesController
  */
 class UpdateTest extends TestCase {
+    use RequiresAuthentication;
+
+    private const Method = 'patchJson';
+
     /**
      * Retorna a url que será testada
      *
@@ -19,7 +24,7 @@ class UpdateTest extends TestCase {
      *
      * @return string URL final
      */
-    private function route( int $id ) : string {
+    private function route( int $id = 0 ) : string {
         return route('api.cliente.update', ['cliente' => $id]);
     }
 }
