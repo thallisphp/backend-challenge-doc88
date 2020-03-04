@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateClienteRequest;
+use App\Http\Requests\UpdateClienteRequest;
 use App\Models\Cliente;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 /**
  * Controller para gerenciamento de clientes
@@ -26,12 +26,12 @@ class ClienteController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CreateClienteRequest $request
      *
-     * @return Response
+     * @return Cliente
      */
-    public function store( Request $request ) {
-        //
+    public function store( CreateClienteRequest $request ) : Cliente {
+        return Cliente::query()->create($request->validated());
     }
 
     /**
@@ -48,13 +48,11 @@ class ClienteController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Cliente $cliente
-     *
-     * @return Response
+     * @param UpdateClienteRequest $request
+     * @param Cliente              $cliente
      */
-    public function update( Request $request, Cliente $cliente ) {
-        //
+    public function update( UpdateClienteRequest $request, Cliente $cliente ) : void {
+        $cliente->update($request->validated());
     }
 
     /**

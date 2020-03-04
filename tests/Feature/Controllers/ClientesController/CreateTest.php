@@ -40,7 +40,7 @@ class CreateTest extends TestCase {
 
         $response = $this->postJson($this->route(), [
             'nome'               => 'a',
-            'email'              => 'aaaaaa@aaaa',
+            'email'              => 'aaaaaa',
             'telefone'           => 'aaaaaa',
             'data_de_nascimento' => Carbon::tomorrow()->format('d/m/Y'),
             'endereco'           => 'aaa',
@@ -49,7 +49,7 @@ class CreateTest extends TestCase {
             'cep'                => $this->faker->phoneNumber,
         ]);
 
-        $response->assertStatus(400);
+        $response->assertStatus(422);
         $response->assertJsonValidationErrors([
             'nome',
             'email',
@@ -74,7 +74,7 @@ class CreateTest extends TestCase {
 
         $response = $this->postJson($this->route(), $cliente->attributesToArray());
 
-        $response->assertOk();
+        $response->assertSuccessful();
 
         $this->assertDatabaseHas($table, [
             'nome'       => $cliente->nome,
@@ -93,7 +93,7 @@ class CreateTest extends TestCase {
 
         $response = $this->postJson($this->route(), $cliente->attributesToArray());
 
-        $response->assertStatus(400);
+        $response->assertStatus(422);
         $response->assertJsonValidationErrors([
             'email',
         ]);

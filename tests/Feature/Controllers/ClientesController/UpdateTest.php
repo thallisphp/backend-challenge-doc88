@@ -96,6 +96,8 @@ class UpdateTest extends TestCase {
             'email' => $this->faker->email,
         ];
 
+        $cliente->delete();
+
         $response = $this->patchJson($this->route($cliente->id), $modificar);
 
         $response->assertNotFound();
@@ -116,7 +118,9 @@ class UpdateTest extends TestCase {
 
         $response = $this->patchJson($this->route($cliente->id), $modificar);
 
-        $response->assertOk();
+        $response->dump();
+
+        $response->assertSuccessful();
 
         $this->assertDatabaseMissing($table, [
             'id'         => $cliente->id,
