@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\PastelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +20,5 @@ Route
     ->name('api.')
     ->group(function () : void {
         Route::apiResource('cliente', ClienteController::class);
+        Route::apiResource('pastel', PastelController::class);
     });

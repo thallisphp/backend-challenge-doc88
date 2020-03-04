@@ -2,66 +2,67 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePastelRequest;
+use App\Http\Requests\UpdatePastelRequest;
 use App\Models\Pastel;
-use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class PastelController extends Controller
-{
+/**
+ * Controller para gerenciamento de pastéis
+ *
+ * @package App\Http\Controllers
+ */
+class PastelController extends Controller {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return LengthAwarePaginator
      */
-    public function index()
-    {
-        //
+    public function index() : LengthAwarePaginator {
+        return Pastel::query()->paginate();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreatePastelRequest $request
+     *
+     * @return Pastel
      */
-    public function store(Request $request)
-    {
-        //
+    public function store( CreatePastelRequest $request ) : Pastel {
+        return Pastel::query()->create($request->validated());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Pastel $pastel
+     * @param Pastel $pastel
      *
-     * @return \Illuminate\Http\Response
+     * @return Pastel
      */
-    public function show(Pastel $pastel)
-    {
-        //
+    public function show( Pastel $pastel ) : Pastel {
+        return $pastel;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param \App\Models\Pastel        $pastel
-     *
-     * @return \Illuminate\Http\Response
+     * @param UpdatePastelRequest $request
+     * @param Pastel              $pastel
      */
-    public function update(Request $request, Pastel $pastel)
-    {
-        //
+    public function update( UpdatePastelRequest $request, Pastel $pastel ) : void {
+        $pastel->update($request->validated());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-	 * @param \App\Models\Pastel $pastel
+     * @param Pastel $pastel
      *
-     * @return \Illuminate\Http\Response
+     * @throws Exception
      */
-    public function destroy(Pastel $pastel)
-    {
-        //
+    public function destroy( Pastel $pastel ) : void {
+        $pastel->delete();
     }
 }
