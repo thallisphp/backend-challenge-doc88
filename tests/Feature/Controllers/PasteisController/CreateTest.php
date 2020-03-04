@@ -5,6 +5,8 @@ namespace Tests\Feature\Controllers\PasteisController;
 use App\Models\Pastel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
 
@@ -46,6 +48,7 @@ class CreateTest extends TestCase {
         $response->assertJsonValidationErrors([
             'nome',
             'preco',
+            'foto',
         ]);
     }
 
@@ -59,7 +62,12 @@ class CreateTest extends TestCase {
         $pastel = factory(Pastel::class)->make();
         $table  = $pastel->getTable();
 
-        $response = $this->postJson($this->route(), $pastel->attributesToArray());
+        Storage::fake('public');
+
+        $dados         = $pastel->attributesToArray();
+        $dados['foto'] = UploadedFile::fake()->image('pastel.jpg');
+
+        $response = $this->postJson($this->route(), $dados);
 
         $response->assertSuccessful();
 
@@ -68,5 +76,9 @@ class CreateTest extends TestCase {
             'preco'      => $pastel->preco,
             'deleted_at' => null,
         ]);
+
+        Storage
+            ::disk('public')
+            ->assertExists('pasteis/' . $dados['foto']->hashName());
     }
 }

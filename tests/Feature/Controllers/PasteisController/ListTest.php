@@ -52,6 +52,7 @@ class ListTest extends TestCase {
                     'id',
                     'nome',
                     'preco',
+                    'foto',
                 ],
             ],
             'first_page_url',
