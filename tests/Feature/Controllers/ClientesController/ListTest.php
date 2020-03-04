@@ -3,6 +3,7 @@
 namespace Tests\Feature\Controllers\ClientesController;
 
 use App\Models\Cliente;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
@@ -16,6 +17,7 @@ use Tests\TestCase;
  */
 class ListTest extends TestCase {
     use RequiresAuthentication;
+    use RefreshDatabase;
 
     private const Method = 'getJson';
 

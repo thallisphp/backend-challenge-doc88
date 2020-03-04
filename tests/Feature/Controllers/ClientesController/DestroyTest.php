@@ -4,7 +4,6 @@ namespace Tests\Feature\Controllers\ClientesController;
 
 use App\Models\Cliente;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
 
@@ -17,7 +16,6 @@ use Tests\TestCase;
  */
 class DestroyTest extends TestCase {
     use RequiresAuthentication;
-    use WithFaker;
     use RefreshDatabase;
 
     private const Method = 'deleteJson';
