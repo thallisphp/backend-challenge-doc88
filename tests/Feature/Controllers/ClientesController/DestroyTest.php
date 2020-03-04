@@ -2,6 +2,9 @@
 
 namespace Tests\Feature\Controllers\ClientesController;
 
+use App\Models\Cliente;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
 
@@ -14,6 +17,8 @@ use Tests\TestCase;
  */
 class DestroyTest extends TestCase {
     use RequiresAuthentication;
+    use WithFaker;
+    use RefreshDatabase;
 
     private const Method = 'deleteJson';
 
@@ -26,5 +31,38 @@ class DestroyTest extends TestCase {
      */
     private function route( int $id = 0 ) : string {
         return route('api.cliente.destroy', ['cliente' => $id]);
+    }
+
+    /**
+     * @testdox ID inválido informado
+     */
+    public function testInvalidRequest() : void {
+        $this->actingAs($this->user());
+
+        $response = $this->deleteJson($this->route());
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * @testdox ID válido informado
+     */
+    public function testValidRequest() : Cliente {
+        $this->actingAs($this->user());
+
+        /** @var Cliente $cliente */
+        $cliente = factory(Cliente::class)->create();
+        $table   = $cliente->getTable();
+
+        $response = $this->deleteJson($this->route($cliente->id));
+
+        $response->assertOk();
+
+        $this->assertDatabaseMissing($table, [
+            'id'         => $cliente->id,
+            'deleted_at' => null,
+        ]);
+
+        return $cliente;
     }
 }

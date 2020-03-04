@@ -76,7 +76,11 @@ class CreateTest extends TestCase {
 
         $response->assertOk();
 
-        $this->assertDatabaseHas($table, $cliente->attributesToArray());
+        $this->assertDatabaseHas($table, [
+            'nome'       => $cliente->nome,
+            'email'      => $cliente->email,
+            'deleted_at' => null,
+        ]);
 
         return $cliente;
     }
