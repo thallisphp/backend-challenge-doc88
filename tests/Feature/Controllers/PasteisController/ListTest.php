@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\Feature\Controllers\ClientesController;
+namespace Tests\Feature\Controllers\PasteisController;
 
-use App\Models\Cliente;
+use App\Models\Pastel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
 
 /**
- * Testes de listagem de clientes
+ * Testes de listagem de pasteís
  *
- * @testdox Listar clientes
+ * @testdox Listar pasteís
  *
- * @package Tests\Feature\Controllers\ClientesController
+ * @package Tests\Feature\Controllers\PasteisController
  */
 class ListTest extends TestCase {
     use RequiresAuthentication;
@@ -27,21 +27,21 @@ class ListTest extends TestCase {
      * @return string URL final
      */
     private function route() : string {
-        return route('api.cliente.index');
+        return route('api.pastel.index');
     }
 
     /**
-     * @testdox Listar clientes
+     * @testdox Listar pasteís
      */
     public function testValid() {
         $this->actingAs($this->user());
 
         /**
-         * @var Collection $clientes Clientes carregados na primeira página
-         * @var Collection $outros   Outros clientes que serão carregados nas próximas páginas
+         * @var Collection $pasteis Pasteís carregados na primeira página
+         * @var Collection $outros  Outros pasteís que serão carregados nas próximas páginas
          */
-        $clientes = factory(Cliente::class)->times(rand(2, 5))->create();
-        $outros   = factory(Cliente::class)->times(rand(50, 100))->create();
+        $pasteis = factory(Pastel::class)->times(rand(2, 5))->create();
+        $outros  = factory(Pastel::class)->times(rand(50, 100))->create();
 
         $response = $this->getJson($this->route());
 
@@ -51,14 +51,7 @@ class ListTest extends TestCase {
                 [
                     'id',
                     'nome',
-                    'email',
-                    'telefone',
-                    'data_de_nascimento',
-                    'endereco',
-                    'complemento',
-                    'bairro',
-                    'cep',
-                    'created_at',
+                    'preco',
                 ],
             ],
             'first_page_url',
@@ -74,14 +67,14 @@ class ListTest extends TestCase {
         ]);
 
         $response->assertJsonFragment([
-            'total' => $clientes->count() + $outros->count(),
+            'total' => $pasteis->count() + $outros->count(),
         ]);
 
-        $clientes->each(function ( Cliente $cliente ) use ( $response ) : void {
-            $response->assertJsonFragment($cliente->toArray());
+        $pasteis->each(function ( Pastel $pastel ) use ( $response ) : void {
+            $response->assertJsonFragment($pastel->toArray());
 
-            $this->assertDatabaseHas($cliente->getTable(), [
-                'id'         => $cliente->id,
+            $this->assertDatabaseHas($pastel->getTable(), [
+                'id'         => $pastel->id,
                 'deleted_at' => null,
             ]);
         });

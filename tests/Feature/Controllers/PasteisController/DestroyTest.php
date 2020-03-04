@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\Feature\Controllers\ClientesController;
+namespace Tests\Feature\Controllers\PasteisController;
 
-use App\Models\Cliente;
+use App\Models\Pastel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
 
 /**
- * Testes de remoção de clientes
+ * Testes de remoção de pastéis
  *
- * @testdox Remover cliente
+ * @testdox Remover pastel
  *
- * @package Tests\Feature\Controllers\ClientesController
+ * @package Tests\Feature\Controllers\PasteisController
  */
 class DestroyTest extends TestCase {
     use RequiresAuthentication;
@@ -23,12 +23,12 @@ class DestroyTest extends TestCase {
     /**
      * Retorna a url que será testada
      *
-     * @param int $id ID do cliente
+     * @param int $id ID do pastel
      *
      * @return string URL final
      */
     private function route( int $id = 0 ) : string {
-        return route('api.cliente.destroy', ['cliente' => $id]);
+        return route('api.pastel.destroy', ['pastel' => $id]);
     }
 
     /**
@@ -48,16 +48,16 @@ class DestroyTest extends TestCase {
     public function testValidRequest() : void {
         $this->actingAs($this->user());
 
-        /** @var Cliente $cliente */
-        $cliente = factory(Cliente::class)->create();
-        $table   = $cliente->getTable();
+        /** @var Pastel $pastel */
+        $pastel = factory(Pastel::class)->create();
+        $table  = $pastel->getTable();
 
-        $response = $this->deleteJson($this->route($cliente->id));
+        $response = $this->deleteJson($this->route($pastel->id));
 
         $response->assertOk();
 
         $this->assertDatabaseMissing($table, [
-            'id'         => $cliente->id,
+            'id'         => $pastel->id,
             'deleted_at' => null,
         ]);
     }

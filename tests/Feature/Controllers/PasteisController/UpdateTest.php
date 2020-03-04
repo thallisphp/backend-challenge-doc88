@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\Feature\Controllers\ClientesController;
+namespace Tests\Feature\Controllers\PasteisController;
 
-use App\Models\Cliente;
+use App\Models\Pastel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
 
 /**
- * Testes de atualização de clientes
+ * Testes de atualização de pastéis
  *
- * @testdox Atualizar cliente
+ * @testdox Atualizar pastel
  *
- * @package Tests\Feature\Controllers\ClientesController
+ * @package Tests\Feature\Controllers\PasteisController
  */
 class UpdateTest extends TestCase {
     use RequiresAuthentication;
@@ -25,25 +25,25 @@ class UpdateTest extends TestCase {
     /**
      * Retorna a url que será testada
      *
-     * @param int $id ID do cliente
+     * @param int $id ID do pastel
      *
      * @return string URL final
      */
     private function route( int $id = 0 ) : string {
-        return route('api.cliente.update', ['cliente' => $id]);
+        return route('api.pastel.update', ['pastel' => $id]);
     }
 
     /**
-     * Gera um cliente para executar os testes
+     * Gera um pastel para executar os testes
      *
-     * @return Cliente
+     * @return Pastel
      */
-    private function cliente() : Cliente {
-        return factory(Cliente::class)->create();
+    private function pastel() : Pastel {
+        return factory(Pastel::class)->create();
     }
 
     /**
-     * @testdox ID de cliente inválido
+     * @testdox ID de pastel inválido
      */
     public function testNotFound() : void {
         $this->actingAs($this->user());
@@ -59,46 +59,46 @@ class UpdateTest extends TestCase {
     public function testInvalid() : void {
         $this->actingAs($this->user());
 
-        $cliente   = $this->cliente();
-        $table     = $cliente->getTable();
+        $pastel    = $this->pastel();
+        $table     = $pastel->getTable();
         $modificar = [
             'nome' => 'a',
         ];
 
-        $response = $this->patchJson($this->route($cliente->id), $modificar);
+        $response = $this->patchJson($this->route($pastel->id), $modificar);
 
         $response->assertJsonValidationErrors([
             'nome',
         ]);
 
         $this->assertDatabaseHas($table, [
-            'id'         => $cliente->id,
-            'nome'       => $cliente->nome,
+            'id'         => $pastel->id,
+            'nome'       => $pastel->nome,
             'deleted_at' => null,
         ]);
 
         $this->assertDatabaseMissing($table, [
-            'id'         => $cliente->id,
+            'id'         => $pastel->id,
             'nome'       => $modificar['nome'],
             'deleted_at' => null,
         ]);
     }
 
     /**
-     * @testdox Cliente deletado
+     * @testdox Pastel deletado
      */
     public function testDeleted() : void {
         $this->actingAs($this->user());
 
-        $cliente   = $this->cliente();
+        $pastel    = $this->pastel();
         $modificar = [
             'nome'  => $this->faker->name,
-            'email' => $this->faker->email,
+            'preco' => $this->faker->randomFloat(2, 1, 100),
         ];
 
-        $cliente->delete();
+        $pastel->delete();
 
-        $response = $this->patchJson($this->route($cliente->id), $modificar);
+        $response = $this->patchJson($this->route($pastel->id), $modificar);
 
         $response->assertNotFound();
     }
@@ -109,28 +109,28 @@ class UpdateTest extends TestCase {
     public function testValid() : void {
         $this->actingAs($this->user());
 
-        $cliente   = $this->cliente();
-        $table     = $cliente->getTable();
+        $pastel    = $this->pastel();
+        $table     = $pastel->getTable();
         $modificar = [
             'nome'  => $this->faker->name,
-            'email' => $this->faker->email,
+            'preco' => $this->faker->randomFloat(2, 1, 100),
         ];
 
-        $response = $this->patchJson($this->route($cliente->id), $modificar);
+        $response = $this->patchJson($this->route($pastel->id), $modificar);
 
         $response->assertSuccessful();
 
         $this->assertDatabaseMissing($table, [
-            'id'         => $cliente->id,
-            'nome'       => $cliente->nome,
-            'email'      => $cliente->email,
+            'id'         => $pastel->id,
+            'nome'       => $pastel->nome,
+            'preco'      => $pastel->preco,
             'deleted_at' => null,
         ]);
 
         $this->assertDatabaseHas($table, [
-            'id'         => $cliente->id,
+            'id'         => $pastel->id,
             'nome'       => $modificar['nome'],
-            'email'      => $modificar['email'],
+            'preco'      => $modificar['preco'],
             'deleted_at' => null,
         ]);
     }
