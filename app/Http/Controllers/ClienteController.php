@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -13,12 +15,12 @@ use Illuminate\Http\Response;
  */
 class ClienteController extends Controller {
     /**
-     * Display a listing of the resource.
+     * Retorna uma lista paginada de clientes
      *
-     * @return Response
+     * @return LengthAwarePaginator
      */
-    public function index() {
-        //
+    public function index() : LengthAwarePaginator {
+        return Cliente::query()->paginate();
     }
 
     /**
@@ -33,21 +35,21 @@ class ClienteController extends Controller {
     }
 
     /**
-     * Display the specified resource.
+     * Retorna os dados de um cliente
      *
-     * @param \App\Models\Cliente $cliente
+     * @param Cliente $cliente
      *
-     * @return Response
+     * @return Cliente
      */
-    public function show( Cliente $cliente ) {
-        //
+    public function show( Cliente $cliente ) : Cliente {
+        return $cliente;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request             $request
-     * @param \App\Models\Cliente $cliente
+     * @param Request $request
+     * @param Cliente $cliente
      *
      * @return Response
      */
@@ -56,13 +58,13 @@ class ClienteController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove um cliente
      *
-     * @param \App\Models\Cliente $cliente
+     * @param Cliente $cliente
      *
-     * @return Response
+     * @throws Exception
      */
-    public function destroy( Cliente $cliente ) {
-        //
+    public function destroy( Cliente $cliente ) : void {
+        $cliente->delete();
     }
 }
