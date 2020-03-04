@@ -16,6 +16,7 @@ class CreatePasteisTable extends Migration {
 
             $table->string('nome', 250);
             $table->decimal('preco', 8, 2);
+            $table->string('foto', 250);
 
             $table->timestampsTz();
             $table->softDeletesTz();

@@ -31,7 +31,13 @@ class PastelController extends Controller {
      * @return Pastel
      */
     public function store( CreatePastelRequest $request ) : Pastel {
-        return Pastel::query()->create($request->validated());
+        $pastel = new Pastel($request->validated());
+
+        $pastel->foto = $request->file('foto')->store('pasteis', 'public');
+
+        $pastel->save();
+
+        return $pastel;
     }
 
     /**

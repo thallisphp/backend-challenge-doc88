@@ -73,6 +73,7 @@ class ReadTest extends TestCase {
         $response->assertJsonStructure([
             'nome',
             'preco',
+            'foto',
         ]);
 
         $response->assertJson($pastel->toArray());

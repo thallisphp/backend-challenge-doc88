@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $id
  * @property string $nome
  * @property float  $preco
+ * @property string $foto
  *
  * @package App\Models
  */
@@ -22,9 +23,18 @@ class Pastel extends Model {
     protected $fillable = [
         'nome',
         'preco',
+        'foto',
     ];
 
     protected $casts = [
         'preco' => 'float',
     ];
+
+    public function toArray() {
+        $pastel = parent::toArray();
+
+        $pastel['foto'] = asset($pastel['foto']);
+
+        return $pastel;
+    }
 }
