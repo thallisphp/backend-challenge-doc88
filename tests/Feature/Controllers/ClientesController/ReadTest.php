@@ -37,7 +37,7 @@ class ReadTest extends TestCase {
     public function testInvalidRequest() : void {
         $this->actingAs($this->user());
 
-        $response = $this->deleteJson($this->route());
+        $response = $this->getJson($this->route());
 
         $response->assertNotFound();
     }

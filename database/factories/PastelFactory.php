@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Http\UploadedFile;
 
 $factory->define(Pastel::class, function ( Faker $faker ) {
-    $foto = UploadedFile::fake()->image('pastel.jpg');
+    $foto = UploadedFile::fake()->image('pastel.png');
 
     return [
         'nome'  => $faker->name,
