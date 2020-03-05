@@ -1,4 +1,4 @@
-## Chalange Doc88 - Thallis Soares
+## Challenge Doc88 - Thallis Soares
 
 ### Instalação
 
