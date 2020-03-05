@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class UpdatePastelRequest extends CreateClienteRequest {
+class UpdatePastelRequest extends CreatePastelRequest {
     /**
      * Get the validation rules that apply to the request.
      *

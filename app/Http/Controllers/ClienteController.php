@@ -50,9 +50,13 @@ class ClienteController extends Controller {
      *
      * @param UpdateClienteRequest $request
      * @param Cliente              $cliente
+     *
+     * @return Cliente
      */
-    public function update( UpdateClienteRequest $request, Cliente $cliente ) : void {
+    public function update( UpdateClienteRequest $request, Cliente $cliente ) : Cliente {
         $cliente->update($request->validated());
+
+        return $cliente;
     }
 
     /**

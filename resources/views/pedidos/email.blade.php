@@ -10,7 +10,8 @@
         @foreach($pedido->pasteis as $pastel)
             <tr>
                 <td>
-                    <img src="{{ asset($pastel->foto) }}"
+                    <img style="width: 100px; border: 1px solid #333;"
+                         src="{{ asset("storage/{$pastel->foto}") }}"
                          alt="{{ $pastel->nome }}">
                 </td>
                 <td>{{ $pastel->nome }}</td>

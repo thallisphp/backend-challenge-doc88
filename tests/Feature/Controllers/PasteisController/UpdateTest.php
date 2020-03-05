@@ -5,6 +5,8 @@ namespace Tests\Feature\Controllers\PasteisController;
 use App\Models\Pastel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
 
@@ -114,7 +116,10 @@ class UpdateTest extends TestCase {
         $modificar = [
             'nome'  => $this->faker->name,
             'preco' => $this->faker->randomFloat(2, 1, 100),
+            'foto'  => UploadedFile::fake()->image('pastel.png'),
         ];
+
+        Storage::fake('public');
 
         $response = $this->patchJson($this->route($pastel->id), $modificar);
 
@@ -133,5 +138,9 @@ class UpdateTest extends TestCase {
             'preco'      => $modificar['preco'],
             'deleted_at' => null,
         ]);
+
+        Storage
+            ::disk('public')
+            ->assertExists('pasteis/' . $modificar['foto']->hashName());
     }
 }

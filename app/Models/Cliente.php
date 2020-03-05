@@ -54,4 +54,8 @@ class Cliente extends Model {
         'updated_at',
         'deleted_at',
     ];
+
+    public function routeNotificationFor($driver, $notification = null) {
+        return $this->email;
+    }
 }
