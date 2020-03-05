@@ -1,0 +1,505 @@
+{
+	"info": {
+		"_postman_id": "765efd5d-ed39-4fa2-8247-f67f3afea0ae",
+		"name": "Challange Doc88",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a02ae74d-57b7-4226-bef4-0fb9ed2eaab4",
+								"exec": [
+									"pm.test(\"Setar ID do cliente\", () => {",
+									"    const jsonData = pm.response.json();",
+									"",
+									"    if (jsonData.id) {",
+									"        pm.globals.set(\"ID_CLIENTE\", jsonData.id);",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Thallis Ferreira Soares Casemiro\",\n\t\"email\": \"thallisphp@gmail.com\",\n\t\"telefone\": \"17-98150-1717\",\n\t\"data_de_nascimento\": \"1990-03-04\",\n\t\"endereco\": \"Rua Patrícia Rodrigues Fontes, 605\",\n\t\"bairro\": \"Rios d'Itália\",\n\t\"cep\" : \"15057-562\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/cliente",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/api/cliente/{{ID_CLIENTE}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"cliente",
+								"{{ID_CLIENTE}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Thallis Soares\",\n\t\"telefone\": \"11-98150-1717\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/cliente/{{ID_CLIENTE}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"cliente",
+								"{{ID_CLIENTE}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Destroy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/api/cliente/{{ID_CLIENTE}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"cliente",
+								"{{ID_CLIENTE}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/api/cliente",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"cliente"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Pastéis",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0b4266ef-0f2c-4c26-b1a3-2906a40cc11c",
+								"exec": [
+									"pm.test(\"Setar ID do pastél\", () => {",
+									"    const jsonData = pm.response.json();",
+									"",
+									"    if (jsonData.id) {",
+									"        pm.globals.set(\"ID_PASTEL\", jsonData.id);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nome",
+									"value": "Mussarela",
+									"type": "text"
+								},
+								{
+									"key": "preco",
+									"value": "1.55",
+									"type": "text"
+								},
+								{
+									"key": "foto",
+									"type": "file",
+									"src": "/home/thallis/Pictures/Screenshot from 2020-01-23 22-44-39.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/pastel",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"pastel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/api/pastel/{{ID_PASTEL}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"pastel",
+								"{{ID_PASTEL}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nome",
+									"value": "Mussarela 2.0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/api/pastel/{{ID_PASTEL}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"pastel",
+								"{{ID_PASTEL}}"
+							]
+						},
+						"description": "Por motivo de um bug do PHP, para atualizar a foto do pastél é necessário utilizar o método POST e adicionar um campo _method=PUT"
+					},
+					"response": []
+				},
+				{
+					"name": "Destroy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/api/pastel/{{ID_PASTEL}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"pastel",
+								"{{ID_PASTEL}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/api/pastel",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"pastel"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Pedidos",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe17055c-cd19-432f-aaab-092532945341",
+								"exec": [
+									"pm.test(\"Setar ID do pedido\", () => {",
+									"    const jsonData = pm.response.json();",
+									"",
+									"    if (jsonData.id) {",
+									"        pm.globals.set(\"ID_PEDIDO\", jsonData.id);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cliente_id\": {{ID_CLIENTE}},\n\t\"pasteis\": [\n\t\t{\n\t\t\t\"pastel_id\": 1,\n\t\t\t\"quantidade\": 5\n\t\t}\n\t]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/pedido",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"pedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "teste",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "teste@teste.com",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "2fe8115e-af75-43e2-b57b-09c0f5df854b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "51f357f8-e7ee-4e2f-8555-4847f74a3e14",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "28a9a80b-aa88-434e-95e4-ccd0620b11ac",
+			"key": "HOST",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

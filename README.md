@@ -58,4 +58,6 @@ Todas as rotas da API requerem autenticação Basic<br>
 **Usuário:** teste@teste.com<br>
 **Senha:** teste
 
-Para executar os testes na API utilize a collection do Postman
+Para executar os testes na API utilize a collection do Postman no arquivo **Challange Doc88.postman_collection.json**
+
+**Obs.** Não criei rotas para atualização nem remoção do pedido, não achei que fossem necessárias.
