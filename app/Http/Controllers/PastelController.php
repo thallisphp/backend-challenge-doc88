@@ -56,9 +56,17 @@ class PastelController extends Controller {
      *
      * @param UpdatePastelRequest $request
      * @param Pastel              $pastel
+     *
+     * @return Pastel
      */
-    public function update( UpdatePastelRequest $request, Pastel $pastel ) : void {
+    public function update( UpdatePastelRequest $request, Pastel $pastel ) : Pastel {
+        if ($request->hasFile('foto')) {
+            $pastel->foto = $request->file('foto')->store('pasteis', 'public');
+        }
+
         $pastel->update($request->validated());
+
+        return $pastel;
     }
 
     /**

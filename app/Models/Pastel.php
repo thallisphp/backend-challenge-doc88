@@ -30,10 +30,15 @@ class Pastel extends Model {
         'preco' => 'float',
     ];
 
+    protected $hidden = [
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function toArray() {
         $pastel = parent::toArray();
 
-        $pastel['foto'] = asset($pastel['foto']);
+        $pastel['foto'] = asset('storage/' . $pastel['foto']);
 
         return $pastel;
     }

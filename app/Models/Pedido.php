@@ -32,6 +32,11 @@ class Pedido extends Model {
         'cliente_id' => 'int',
     ];
 
+    protected $hidden = [
+        'updated_at',
+        'deleted_at',
+    ];
+
     /**
      * @return BelongsTo|Cliente
      */

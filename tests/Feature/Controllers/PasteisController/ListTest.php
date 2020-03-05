@@ -40,6 +40,7 @@ class ListTest extends TestCase {
          * @var Collection $pasteis Pasteís carregados na primeira página
          * @var Collection $outros  Outros pasteís que serão carregados nas próximas páginas
          */
+        $count   = Pastel::query()->count();
         $pasteis = factory(Pastel::class)->times(rand(2, 5))->create();
         $outros  = factory(Pastel::class)->times(rand(50, 100))->create();
 
@@ -68,7 +69,7 @@ class ListTest extends TestCase {
         ]);
 
         $response->assertJsonFragment([
-            'total' => $pasteis->count() + $outros->count(),
+            'total' => $count + $pasteis->count() + $outros->count(),
         ]);
 
         $pasteis->each(function ( Pastel $pastel ) use ( $response ) : void {
