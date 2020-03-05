@@ -9,7 +9,6 @@ use App\Models\Pedido;
 use App\Notifications\PedidoRealizado;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Notification;
 
 class PedidoController extends Controller {
     /**
@@ -39,9 +38,10 @@ class PedidoController extends Controller {
     public function store( CreatePedidoRequest $request ) : Pedido {
         $pedido = new Pedido;
 
+        /** @var Cliente $cliente */
         $cliente = Cliente
             ::query()
-            ->findOrFail($request->input('cliente_id'), ['id']);
+            ->findOrFail($request->input('cliente_id'));
 
         $pedido->cliente()->associate($cliente);
         $pedido->save();
@@ -59,7 +59,7 @@ class PedidoController extends Controller {
                 ]);
             });
 
-        Notification::send($cliente, new PedidoRealizado($pedido));
+        $cliente->notifyNow(new PedidoRealizado($pedido));
 
         return $pedido;
     }

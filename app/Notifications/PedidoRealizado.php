@@ -41,9 +41,10 @@ class PedidoRealizado extends Notification {
      */
     public function toMail( $notifiable ) : MailMessage {
         return (new MailMessage)
+            ->success()
             ->subject('Aqui está o seu pedido!')
             ->line("Olá {$this->pedido->cliente->nome}! Recebemos o seu pedido.")
             ->line('Confira abaixo os dados do seu pedido')
-            ->view('pedidos.email', ['pedido' => $this->pedido]);
+            ->line(view('pedidos.email', ['pedido' => $this->pedido]));
     }
 }

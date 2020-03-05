@@ -90,7 +90,7 @@ class CreateTest extends TestCase {
     public function testValidRequest() : void {
         $this->actingAs($this->user());
 
-        //Notification::fake();
+        Notification::fake();
 
         /** @var Pedido $pedido */
         $table   = (new Pedido)->getTable();
@@ -128,13 +128,13 @@ class CreateTest extends TestCase {
             ]);
         });
 
-        //Notification::assertSentTo(
-        //    $cliente,
-        //    PedidoRealizado::class,
-        //    function ( $notification, $channels ) use ( $pedido ) {
-        //        return in_array('mail', $channels)
-        //               && $notification->pedido->id === $pedido;
-        //    }
-        //);
+        Notification::assertSentTo(
+            $cliente,
+            PedidoRealizado::class,
+            function ( $notification, $channels ) use ( $pedido ) {
+                return in_array('mail', $channels)
+                       && $notification->pedido->id === $pedido;
+            }
+        );
     }
 }
