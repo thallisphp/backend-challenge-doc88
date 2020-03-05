@@ -8,6 +8,7 @@ use App\Models\Pedido;
 use App\Notifications\PedidoRealizado;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Notification;
 use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
@@ -131,9 +132,12 @@ class CreateTest extends TestCase {
         Notification::assertSentTo(
             $cliente,
             PedidoRealizado::class,
-            function ( $notification, $channels ) use ( $pedido ) {
+            function ( PedidoRealizado $notification, $channels ) use ( $pedido ) {
                 return in_array('mail', $channels)
-                       && $notification->pedido->id === $pedido;
+                       && $notification->pedido->id === $pedido
+                       && $notification->toMail(null) instanceof MailMessage
+                       && $notification->pedido->cliente->routeNotificationFor('mail') === $notification->pedido->cliente->email
+                    ;
             }
         );
     }
