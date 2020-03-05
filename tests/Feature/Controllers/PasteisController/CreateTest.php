@@ -65,7 +65,7 @@ class CreateTest extends TestCase {
         Storage::fake('public');
 
         $dados         = $pastel->attributesToArray();
-        $dados['foto'] = UploadedFile::fake()->image('pastel.jpg');
+        $dados['foto'] = UploadedFile::fake()->image('pastel.png');
 
         $response = $this->postJson($this->route(), $dados);
 
