@@ -2,66 +2,76 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePedidoRequest;
+use App\Models\Cliente;
+use App\Models\Pastel;
 use App\Models\Pedido;
-use Illuminate\Http\Request;
+use App\Notifications\PedidoRealizado;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Notification;
 
-class PedidoController extends Controller
-{
+class PedidoController extends Controller {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return LengthAwarePaginator
      */
-    public function index()
-    {
-        //
+    public function index() : LengthAwarePaginator {
+        return Pedido
+            ::query()
+            ->with(['cliente' => function ( BelongsTo $query ) : void {
+                $query->select([
+                    'id',
+                    'nome',
+                ]);
+            }])
+            ->paginate();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreatePedidoRequest $request
+     *
+     * @return Pedido
      */
-    public function store(Request $request)
-    {
-        //
+    public function store( CreatePedidoRequest $request ) : Pedido {
+        $pedido = new Pedido;
+
+        $cliente = Cliente
+            ::query()
+            ->findOrFail($request->input('cliente_id'), ['id']);
+
+        $pedido->cliente()->associate($cliente);
+        $pedido->save();
+
+        $pasteisPedido = collect($request->input('pasteis'))->pluck('quantidade', 'pastel_id');
+
+        Pastel
+            ::query()
+            ->whereIn('id', $pasteisPedido->keys())
+            ->get()
+            ->keyBy('id')
+            ->each(function ( Pastel $pastel ) use ( $pedido, $pasteisPedido ) : void {
+                $pedido->pasteis()->save($pastel, [
+                    'quantidade' => $pasteisPedido->get($pastel->id),
+                ]);
+            });
+
+        Notification::send($cliente, new PedidoRealizado($pedido));
+
+        return $pedido;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Pedido $pedido
+     * @param Pedido $pedido
      *
-     * @return \Illuminate\Http\Response
+     * @return Pedido
      */
-    public function show(Pedido $pedido)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param \App\Models\Pedido        $pedido
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Pedido $pedido)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-	 * @param \App\Models\Pedido $pedido
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Pedido $pedido)
-    {
-        //
+    public function show( Pedido $pedido ) : Pedido {
+        return $pedido->load('cliente', 'pasteis');
     }
 }

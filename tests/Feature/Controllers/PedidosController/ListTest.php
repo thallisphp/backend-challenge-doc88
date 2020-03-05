@@ -3,6 +3,7 @@
 namespace Tests\Feature\Controllers\PedidosController;
 
 use App\Models\Pedido;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\Feature\Controllers\RequiresAuthentication;
@@ -51,7 +52,9 @@ class ListTest extends TestCase {
                 [
                     'id',
                     'cliente_id',
-                    'cliente_nome',
+                    'cliente' => [
+                        'nome',
+                    ],
                     'created_at',
                 ],
             ],
@@ -72,7 +75,14 @@ class ListTest extends TestCase {
         ]);
 
         $pedidos->each(function ( Pedido $pedido ) use ( $response ) : void {
-            $response->assertJsonFragment($pedido->toListArray());
+            $pedido->load(['cliente' => function ( BelongsTo $query ) : void {
+                $query->select([
+                    'id',
+                    'nome',
+                ]);
+            }]);
+
+            $response->assertJsonFragment($pedido->toArray());
 
             $this->assertDatabaseHas($pedido->getTable(), [
                 'id'         => $pedido->id,

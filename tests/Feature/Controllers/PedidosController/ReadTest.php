@@ -5,6 +5,7 @@ namespace Tests\Feature\Controllers\PedidosController;
 use App\Models\Pastel;
 use App\Models\Pedido;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 use Tests\Feature\Controllers\RequiresAuthentication;
 use Tests\TestCase;
 
@@ -38,7 +39,7 @@ class ReadTest extends TestCase {
     public function testInvalidRequest() : void {
         $this->actingAs($this->user());
 
-        $response = $this->deleteJson($this->route());
+        $response = $this->getJson($this->route());
 
         $response->assertNotFound();
     }
@@ -64,7 +65,10 @@ class ReadTest extends TestCase {
     public function testValid() : void {
         $this->actingAs($this->user());
 
-        /** @var Pedido $pedido */
+        /**
+         * @var Pedido     $pedido
+         * @var Collection $pasteis
+         */
         $pedido = factory(Pedido::class)->create();
 
         $response = $this->getJson($this->route($pedido->id));
@@ -88,12 +92,14 @@ class ReadTest extends TestCase {
                 'created_at',
             ],
             'pasteis' => [
-                'quantidade',
-                'pastel' => [
+                [
                     'id',
                     'nome',
                     'preco',
                     'foto',
+                    'pivot' => [
+                        'quantidade',
+                    ],
                 ],
             ],
         ]);
@@ -102,10 +108,7 @@ class ReadTest extends TestCase {
         $response->assertJsonFragment($pedido->cliente->toArray());
 
         $pedido->pasteis->each(function ( Pastel $pastel ) use ( $response ): void {
-            $response->assertJsonFragment([
-                'quantidade' => $pastel->pivot->quantidade,
-                'pastel'     => $pastel->toArray(),
-            ]);
+            $response->assertJsonFragment($pastel->toArray());
         });
     }
 }
