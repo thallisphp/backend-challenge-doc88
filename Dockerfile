@@ -38,7 +38,7 @@ RUN curl -sS https://getcomposer.org/installer | php \
     && composer global require hirak/prestissimo --no-plugins --no-scripts \
     && composer --version
 
-USER www-data
+#USER www-data
 
 WORKDIR /var/www/html
 
@@ -46,8 +46,13 @@ WORKDIR /var/www/html
 COPY --chown=www-data:www-data ./ /var/www/html
 COPY --chown=www-data:www-data ./.env.example /var/www/html/.env
 
-RUN composer install --prefer-dist --no-suggest --no-interaction
-RUN php artisan key:generate
-RUN php artisan migrate
+RUN touch database/database.sqlite \
+    && composer install --prefer-dist --no-suggest --no-interaction \
+    && php artisan key:generate \
+    && php artisan migrate:fresh \
+    && rm -rf public/storage \
+    && php artisan storage:link
 
-CMD ["php", "artisan", "serve"]
+EXPOSE 8000
+
+CMD ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "8000"]
